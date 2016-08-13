@@ -8,6 +8,7 @@ Vlogin=False
 Vsenha=False
 Vlogin2=False
 Vsenha2=False
+#teste
 
 #procedimento criar tela de login. obs: só predefini usuario e senha porque o sistema de cadastro ainda não está funcionando, fiz isso apenas para simular um login na apresentação.
 def salva(nome, login, senha):
