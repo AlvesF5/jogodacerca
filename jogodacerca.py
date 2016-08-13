@@ -1,9 +1,13 @@
 # coding=UTF-8
 import os
 import getpass 
-jogador1=str
-jogador2=str
+login_digitado=str
+login_digitado2=str
 confirmacao_senha=str
+Vlogin=False
+Vsenha=False
+Vlogin2=False
+Vsenha2=False
 
 #procedimento criar tela de login. obs: só predefini usuario e senha porque o sistema de cadastro ainda não está funcionando, fiz isso apenas para simular um login na apresentação.
 def salva(nome, login, senha):
@@ -13,7 +17,7 @@ def salva(nome, login, senha):
     db.writelines(senha+'\n')
     db.close()
 
-def tela_login(login="Matheus", senha="alvesm4999"):
+def tela_login(login=str, senha=str, Vlogin=bool, Vsenha=bool):
     print("")
     print("======================================================")
     print("======================================================")
@@ -21,19 +25,95 @@ def tela_login(login="Matheus", senha="alvesm4999"):
     print("======================================================")
     print("======================================================")
     #captura o nome de usuario digitado
+    cont=0
+    x=0
+    dataset = open('db.txt','r')
     login_digitado = input("Digite seu nome de usuario: ")
-    #captura a senha digitada
     senha_digitada = getpass.getpass("Digite sua senha: ")
+    for line in dataset:
+        login=line
+        senha=line
+        if(login_digitado+"\n"==login):
+            Vlogin=True
+            print ("achado login")
+            x=cont
+        
+        
+        
+       
+        if(senha_digitada+"\n"==senha)and(cont==x+1)and (cont%2==0):
+            Vsenha=True
+            print("achado senha")
+        cont=cont+1
+        
+    #captura a senha digitada
+        
+    
+        
+
+
     #verfica se o login e a senha digitada corresposnde aos dados cadastrados
-    if (login_digitado == login) and (senha_digitada == senha):
+    if (Vlogin == True) and (Vsenha == True):
         #se a condição for verdadeira mostra a tela de opções
         os.system('clear')
-        tela_opcoes()
+        print("Jogador "+login_digitado+" logado com sucesso!")
+        
+    else:
+        os.system('clear')
+        erro_login()
+    dataset.close()
+
+
+def tela_login2(login2=str, senha2=str, Vlogin2=bool, Vsenha2=bool):
+    print("")
+    print("======================================================")
+    print("======================================================")
+    print("============= INSIRA SEU LOGIN E SENHA: ==============")
+    print("======================================================")
+    print("======================================================")
+    #captura o nome de usuario digitado
+    cont2=0
+    y=0
+    dataset = open('db.txt','r')
+    login_digitado2 = input("Digite seu nome de usuario: ")
+    senha_digitada2 = getpass.getpass("Digite sua senha: ")
+    for line in dataset:
+        login2=line
+        senha2=line
+        if(login_digitado2+"\n"==login2):
+            Vlogin2=True
+            print ("achado login")
+
+           
+        
+        
+       
+        if(senha_digitada2+"\n"==senha2):
+            Vsenha2=True
+            print("achado senha")
+        cont2=cont2+1
+       
+        
+    #captura a senha digitada
+        
+    
+        
+
+
+    #verfica se o login e a senha digitada corresposnde aos dados cadastrados
+    if (Vlogin2 == True) and (Vsenha2 == True):
+        print("Jogador " +login_digitado2+" logado com sucesso!")
+        print("")
+        tela_jogo()
+
+        
         
     else:
         #se a condição for falsa mostra a tela de erro de login
-        os.system('clear')
-        erro_login()
+        
+        erro_login2()
+
+    dataset.close()
 
 #procedimento para criar tela de cadastro
 def tela_cadastro():
@@ -78,6 +158,16 @@ def erro_login():
     if(resposta=="2"):
         os.system('clear')
         tela_cadastro()
+def erro_login2():
+    print("Usurio ou senha invalidos!")
+    resposta=input("Para digitar novamente digite 1 e tecle enter, para cadastra novo usuario digite 2 e tecle enter: ")
+    #verifica se o usuario quer repetir a tentativa de login ou ir pra tela de cadastro
+    if(resposta=="1"):
+        os.system('clear')
+        tela_login2()
+    if(resposta=="2"):
+        os.system('clear')
+        tela_cadastro()
 
 #procedimento para criar tela de voltar, sair ou jogar
 def tela_voltar_sair():
@@ -112,9 +202,11 @@ def tela_sair():
 
 #procedimento para criar tela de opções do jogo
 def tela_opcoes():
+    print("")
     print("======================================================")
     print("======================================================")
-    print("=========== ESCOLHA UMA DAS OPÇÕES ABAIXO: ===========")
+    print("============= BEM VINDO AO JOGO DA CERCA =============")
+    print("============ ESCOLHA UMA DAS OPÇÕES ABAIXO ===========")
     print("======================================================")
     print("======================================================")
     print("")
@@ -137,52 +229,11 @@ def tela_instrucoes():
     print("")
     print("Para cada jogada a ser execultada é necessario informar\n as coordenadas (linha e coluna) dos dois pontos    que\n deseja interligar. Ex: ligar o ponto 1,1 no ponto 1,2,\n sendo que o primeiro número faz referencia a linha,  e\n o segundo a coluna. ")
     #exibe a tela que da ao usuario a opção de voltar a tela de oções, ir para o jogo ou sair do jogo
+    print("")
     tela_voltar_sair()
 
 #procedimento para criar tela do jogo
-def tela_jogo():
-    jogador1=input("Digite o nome do primeiro jogador: ")
-    jogador2=input("Digite o nome do segundo jogador: ")
-    print("    C    1         2        3        4")
-    print("")
-    print("L")
-    print("")
-    print("1        O---------O        O        O")
-    print("         |         |")
-    print("         |    M    |")
-    print("         |         |")
-    print("2        O---------O        O        O")
-    print("")
-    print("")
-    print("")
-    print("3        O         O        O        O")
-    print("")
-    print("")
-    print("")
-    print("4        O         O        O        O")
-    print("")
-    print("Digite 0 (zero) e tecle enter a qualquer momento\n para voltar a tela inicial.")
-    #define um valor para a jogada
-    jogada1=1111111111
-    jogada2=1111111111
-    #repete a leitura da jogada de cada jogar enquanto a jogada for diferente no numero 0
-    while(True):
-        jogada1 = int(eval(input("Vez do jogador "+jogador1+ " :")))
-        if (jogada1 == 0) :
-            # se a jogada for 0, pergunta se o usuario realmente deseja abandonar a partida
-            confirmacao = input("Tem certeza que deseja abandonar a partida? sim/nao: ")
-            #se a resposta for positiva, mostra a tela de opções
-            if ((confirmacao == "sim") or (confirmacao=="s")):
-                os.system('clear')
-                tela_opcoes()
-        jogada2 = int(eval(input("Vez do jogador "+jogador2+ " :")))
-        if (jogada2==0):
-            # se a jogada for 0, pergunta se o usuario realmente deseja abandonar a partida
-            confirmacao = input("Tem certeza que deseja abandonar a partida? sim/nao: ")
-            #se a resposta for positiva, mostra a tela de opções
-            if ((confirmacao == "sim") or (confirmacao=="n")):
-                os.system('clear')
-                tela_opcoes()
+
 
             #se a resposta for negativa volta a ler as jogadas
 
@@ -205,7 +256,7 @@ def mostra_tela():
     if(escolha=="1"):
         #chama a tela do jogo
         os.system('clear')
-        tela_jogo()
+        tela_pergunta()
     if(escolha=="2"):
         #chama a tela de instruções
         os.system('clear')
@@ -222,27 +273,79 @@ def mostra_tela():
     return escolha
 
 
-#procedimento para criar a tela de pergunta de cadastro
+#procedimento para criar a tela do jogo
+    
+def tela_jogo():
+    print("    C    1         2        3        4")
+    print("")
+    print("L")
+    print("")
+    print("1        O---------O        O        O")
+    print("         |         |")
+    print("         |    M    |")
+    print("         |         |")
+    print("2        O---------O        O        O")
+    print("")
+    print("")
+    print("")
+    print("3        O         O        O        O")
+    print("")
+    print("")
+    print("")
+    print("4        O         O        O        O")
+    print("")
+    print("Digite 0 (zero) e tecle enter a qualquer momento\n para voltar a tela inicial.")
+    #define um valor para a jogada
+   
+    #repete a leitura da jogada de cada jogar enquanto a jogada for diferente no numero 0
+    while(True):
+        jogada1 = int(eval(input("Vez do jogador "+str(login_digitado)+" :")))
+        if (jogada1 == 0) :
+            # se a jogada for 0, pergunta se o usuario realmente deseja abandonar a partida
+            confirmacao = input("Tem certeza que deseja abandonar a partida? sim/nao: ")
+            #se a resposta for positiva, mostra a tela de opções
+            if ((confirmacao == "sim") or (confirmacao=="s")):
+                os.system('clear')
+                tela_opcoes()
+
+        jogada2 = int(eval(input("Vez do jogador "+str(login_digitado2)+ " :")))
+        if (jogada2==0):
+            # se a jogada for 0, pergunta se o usuario realmente deseja abandonar a partida
+            confirmacao = input("Tem certeza que deseja abandonar a partida? sim/nao: ")
+            #se a resposta for positiva, mostra a tela de opções
+            if ((confirmacao == "sim") or (confirmacao=="n")):
+                os.system('clear')
+                tela_opcoes()
+
+
 def tela_pergunta():
-    pergunta=input("Já possui cadastro no jogo? Digite 'sim' e tecle enter\n caso tenha, ou digite 'não' e tecle enter para criar\n novo cadastro: ")
-    if((pergunta=="sim") or (pergunta=="s")):
+    login1=input("Jogador 1 já possui cadastro no jogo? Digite 'sim' e tecle enter\n caso tenha, ou digite 'não' e tecle enter para criar\n novo cadastro: ")
+    if((login1=="sim") or (login1=="s")):
      #mostra a tela de login
          os.system('clear')
          tela_login()
-    if((pergunta=="nao") or (pergunta=="não") or (pergunta=="n")):
+    if((login1=="nao") or (login1=="não") or (login1=="n")):
         #mostra a tela de cadastro
         os.system('clear')
         tela_cadastro()
-#mostra a tela de pergunta
+    
+    print("")
 
-#mostra os textos abaixo no inicio do jogo
-print("======================================================")
-print("======================================================")
-print("============= BEM VINDO AO JOGO DA CERCA =============")
-print("======================================================")
-print("======================================================")
-#mostra a tela de pergunta
-tela_pergunta()
+    login2=input("Jogador 2 já possui cadastro no jogo? Digite 'sim' e tecle enter\n caso tenha, ou digite 'não' e tecle enter para criar\n novo cadastro: ")
+    if((login2=="sim") or (login2=="s")):
+     #mostra a tela de login
+         os.system('clear')
+         tela_login2()
+    if((login2=="nao") or (login2=="não") or (login1=="n")):
+        #mostra a tela de cadastro
+        os.system('clear')
+        tela_cadastro()
+
+    print("")
+
+    
+#mostra a tela de opções no inicio do jogo
+tela_opcoes()
 
 
 
